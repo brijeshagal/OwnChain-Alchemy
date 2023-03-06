@@ -1,0 +1,10 @@
+exports.balances = {
+  "faef3ac7f6e588194b7516cee5cc7e0aca69d74f": 100,
+  "d4c6777addf7f6fed3aa22acd2da7b2afae52e2a": 250
+};
+
+// 9278158469f6d1acce6c7522e6052572b9baa7ffa8ce0e480829856cd6993948
+// faef3ac7f6e588194b7516cee5cc7e0aca69d74f
+
+// 0cccb0804f352e8c375501af1649d10bc367b5ca568597dbddb6dfa6ee399201
+// d4c6777addf7f6fed3aa22acd2da7b2afae52e2a
