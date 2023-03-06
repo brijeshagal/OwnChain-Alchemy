@@ -36,7 +36,7 @@ app.post("/send", async (req, res) => {
       signature,
       recoveryBit
     );
-    // console.log("publicKey: " + publicKey);
+    console.log("publicKey: " + publicKey);
     const sender = getAddress(publicKey);
     setInitialBalance(sender);
     setInitialBalance(recipient);
