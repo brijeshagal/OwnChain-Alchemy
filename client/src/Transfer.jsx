@@ -1,7 +1,7 @@
 import { useState } from "react";
 import server from "./server";
 import { signMessage } from './components/util';
-
+// Transfer on OwnChain
 function Transfer({ privateKey, setBalance }) {
   const [sendAmount, setSendAmount] = useState("");
   const [recipient, setRecipient] = useState("");
