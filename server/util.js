@@ -6,7 +6,7 @@ const getHash = (message) => keccak256(utf8ToBytes(message));
 
 const getHex = (publicKey) => {
   const tmp = keccak256(publicKey.slice(1));
-
+  // To get the address.
   return tmp.slice(-20);
 };
 
