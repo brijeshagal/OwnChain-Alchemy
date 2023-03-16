@@ -30,34 +30,34 @@ app.post("/getBalance", async (req, res) => {
   // console.log(publicKey);
   if (!balances[publicKey]) balances[publicKey] = 0;
   console.log(balances[publicKey]);
-  // const { signature, message, recoveryBit } = req.body;
-  // const publicKey = await recoverKey(message, signature, recoveryBit);
   res.send({ balance: balances[publicKey] });
 });
 
 app.post("/send", upload.none(), async (req, res) => {
-  const { signature, recoveryBit, amount, recepient } = req.body;
-  // console.log(req.body);
-  const sign = new Uint8Array(signature.split(","));  
+  const { signature, recoveryBit, amount, recepient, publicKey } = req.body;
+  const sign = new Uint8Array(signature.split(","));
   const recovery = parseInt(recoveryBit);
   console.log(sign);
   const sender = await recoverKey(amount, sign, recovery);
-  // console.log('ok');
   try {
+    if (publicKey !== sender) {
+      res.status(400).send({ message: "Unauthorized" });
+      return;
+    }
     if (!balances[sender]) balances[sender] = 0;
     if (!balances[recepient]) balances[recepient] = 0;
     let amt = parseInt(amount);
-    console.log('Balance of sender: ', balances[sender])
-    console.log('Sender: ', sender)
+    console.log("Balance of sender: ", balances[sender]);
+    console.log("Sender: ", sender);
     if (balances[sender] < amt) {
       res.status(400).send({ message: "Not enough funds!" });
+      return;
     } else {
       balances[sender] -= amt;
       console.log("Amount: ", amt);
       balances[recepient] += amt;
       res.send({ balance: balances[sender] });
     }
-    // console.log(balances);
   } catch (e) {
     console.log(e.message);
   }

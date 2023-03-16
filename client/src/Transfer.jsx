@@ -7,24 +7,16 @@ import { utf8ToBytes } from "ethereum-cryptography/utils";
 // Transfer on OwnChain
 function Transfer({ publicKey, setBalance }) {
   const [sendAmount, setSendAmount] = useState("");
-  const [recepient, setRecepient] = useState("");
-  // const [signature, setSignature] = useState("");
+  const [recepient, setRecepient] = useState("");  
   const [privateKey, setPrivateKey] = useState("");
-  // const [message, setMessage] = useState("");
-  // const [recoveryBit, setRecoveryBit] = useState("");
-  // const signMsg = async () => {
-  //   const [sig, recoverybit] = await signMessage(message);
-  //   setSignature(sig);
-  //   setRecoveryBit(recoverybit);
-  // };
   const setValue = (setter) => (evt) => setter(evt.target.value);
 
   async function transfer(evt) {
     evt.preventDefault();
     const hash = keccak256(utf8ToBytes(sendAmount));
     const [signature, recoveryBit] = await signMessage(hash, privateKey);
-    console.log(signature);    
-    setPrivateKey('');    
+    // console.log(signature);
+    setPrivateKey("");
     const form = new FormData();
     form.set("signature", signature);
     form.set("recoveryBit", recoveryBit);
@@ -34,13 +26,7 @@ function Transfer({ publicKey, setBalance }) {
     try {
       const {
         data: { balance },
-      } = await server.post(
-        "/send",
-        form
-        //  {
-        //   headers: { "Content-Type": "multipart/form-data" },
-        // }
-      );
+      } = await server.post("/send", form);
       setBalance(balance);
     } catch (ex) {
       alert(ex.response.data.message);
