@@ -1,28 +1,17 @@
-import server from './server';
-import { getAddress } from './components/util';
-import axios from 'axios';
+import server from "./server";
 
-function Wallet({
-  address,
-  setAddress,
-  balance,
-  setBalance,
-  privateKey,
-  setPrivateKey,
-}) {
+function Wallet({ balance, setBalance, publicKey, setPublicKey }) {
   async function onChange(e) {
-    const privateKey = e.target.value;
-    setPrivateKey(privateKey);
-    const temp_address = getAddress(privateKey);
-    setAddress(temp_address);
-    if (temp_address) {       
-      const {
-        data: { balance },
-      } = await server.get(`/balance/${temp_address}`);
-      setBalance(balance);
-    } else {
-      setBalance(0);
-    }
+    const pubKey = e.target.value;
+    await setPublicKey(pubKey);
+    console.log(pubKey);
+    const {
+      data: { balance },
+    } = await server.post("/getBalance", {
+      publicKey: pubKey,
+    });
+    console.log(balance);
+    setBalance(balance);
   }
 
   return (
@@ -30,15 +19,13 @@ function Wallet({
       <h1>Your Wallet</h1>
 
       <label>
-        Private Key
+        Public Key
         <input
-          placeholder="Type a private key"
-          value={privateKey}
+          placeholder="Enter your public key"
+          value={publicKey}
           onChange={onChange}
         ></input>
       </label>
-      <>PublicKey: {address}</>
-
       <div className="balance">Your Balance: {balance}</div>
     </div>
   );
